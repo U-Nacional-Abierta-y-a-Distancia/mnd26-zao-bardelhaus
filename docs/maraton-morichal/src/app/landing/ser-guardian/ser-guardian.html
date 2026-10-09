@@ -1,0 +1,236 @@
+<section class="seccion guardian" id="guardian" aria-labelledby="guardian-titulo">
+  <div class="wide">
+    <div class="intro">
+      <p class="escena">Comprométete</p>
+      <h2 id="guardian-titulo">Ser guardián del morichal</h2>
+      <p>
+        Cada casa que se compromete se enciende en el tablero de la vereda. Entre todas, protegemos
+        el lugar donde nace nuestra agua.
+      </p>
+    </div>
+
+    <div class="tablero" [class.cargando]="cargandoTablero()" [attr.aria-busy]="cargandoTablero()">
+      <div>
+        <p class="tab-etq">Hogares guardianes</p>
+        <p class="tab-num" id="tab-total">
+          {{ totales() ? totalCasas().toLocaleString('es-CO') : '—'
+          }}<span class="tab-meta"> de {{ meta().toLocaleString('es-CO') }}</span>
+        </p>
+        <p class="tab-sub">
+          @if (cargandoTablero()) {
+            Cargando el tablero de la vereda…
+          } @else if (!totales()) {
+            No pudimos cargar el tablero. Recarga la página para intentarlo de nuevo.
+          } @else {
+            casas alrededor del morichal
+          }
+        </p>
+        <div
+          class="barra"
+          role="progressbar"
+          aria-labelledby="tab-total"
+          aria-valuemin="0"
+          [attr.aria-valuenow]="totalCasas()"
+          [attr.aria-valuemax]="meta()"
+        >
+          <div class="barra-fill" [style.width.%]="porcentaje()"></div>
+        </div>
+        <div class="casas" aria-hidden="true">
+          @for (encendida of casas(); track $index) {
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M3 11 L12 3 L21 11 V21 H3 Z"
+                [attr.fill]="encendida ? '#C7683A' : 'none'"
+                [attr.stroke]="encendida ? '#C7683A' : '#4E7A5E'"
+                stroke-width="1.8"
+                stroke-linejoin="round"
+              />
+              @if (encendida) {
+                <rect x="10" y="14" width="4" height="7" fill="#1F3A2B" />
+              }
+            </svg>
+          }
+        </div>
+      </div>
+
+      <div>
+        <p class="tab-etq">Lo que se han comprometido a hacer</p>
+        <ul class="comp-lista">
+          @for (c of desglose(); track c.id) {
+            <li>
+              <span>{{ c.descripcion }}</span
+              ><b>{{ totales() ? c.total : '—' }}</b>
+              <span class="mini"><i [style.width.%]="c.ancho"></i></span>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="acordeon">
+      <div class="acordeon-item" [class.abierto]="registroAbierto()">
+        <h3>
+          <button
+            type="button"
+            class="acordeon-titulo"
+            id="titulo-registro"
+            aria-controls="panel-registro"
+            [attr.aria-expanded]="registroAbierto()"
+            (click)="registroAbierto.set(!registroAbierto())"
+          >
+            Registra tu hogar
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+          </button>
+        </h3>
+        <div
+          class="acordeon-panel"
+          id="panel-registro"
+          role="region"
+          aria-labelledby="titulo-registro"
+          [attr.inert]="registroAbierto() ? null : ''"
+        >
+          <div class="acordeon-interior">
+            <form class="tarjeta-form" novalidate (submit)="registrar($event)">
+              <fieldset class="campo">
+                <legend>En mi casa nos comprometemos a</legend>
+                <div class="fichas">
+                  @for (c of compromisos(); track c.id; let i = $index) {
+                    <label class="ficha-comp">
+                      <input
+                        type="checkbox"
+                        [checked]="elegidos().has(c.id)"
+                        (change)="alternar(c.id, $any($event.target).checked)"
+                      />
+                      <span class="fc-n">{{ i + 1 }}</span
+                      ><span>{{ c.texto }}</span>
+                    </label>
+                  }
+                </div>
+                <div class="error">{{ errorCompromiso() }}</div>
+              </fieldset>
+              <div class="campo">
+                <label for="sector">Sector o punto de referencia de mi casa</label>
+                <input
+                  type="text"
+                  id="sector"
+                  required
+                  placeholder="Ej.: Junto a la tienda o Calle 3 # 4-12"
+                  [attr.aria-invalid]="!!errorSector()"
+                  [value]="sector()"
+                  (input)="sector.set($any($event.target).value); errorSector.set('')"
+                />
+                <div class="error">{{ errorSector() }}</div>
+              </div>
+              <p class="nota">No pedimos tu nombre. Solo los compromisos y el sector.</p>
+              <div>
+                <button type="submit" class="btn btn-oscuro" [disabled]="enviandoRegistro()">
+                  {{ enviandoRegistro() ? 'Registrando…' : 'Encender mi casa en el tablero' }}
+                </button>
+                <p class="estado" aria-live="polite">{{ estadoRegistro() }}</p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="acordeon-item" [class.abierto]="reporteAbierto()">
+        <h3>
+          <button
+            type="button"
+            class="acordeon-titulo"
+            id="titulo-reporte"
+            aria-controls="panel-reporte"
+            [attr.aria-expanded]="reporteAbierto()"
+            (click)="reporteAbierto.set(!reporteAbierto())"
+          >
+            Reporta
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+          </button>
+        </h3>
+        <div
+          class="acordeon-panel"
+          id="panel-reporte"
+          role="region"
+          aria-labelledby="titulo-reporte"
+          [attr.inert]="reporteAbierto() ? null : ''"
+        >
+          <div class="acordeon-interior">
+            <form class="tarjeta-form" novalidate (submit)="reportar($event, fotoInput)">
+              <p class="pregunta">
+                ¿Viste basura en el morichal o en el camino? ¿Viste tala en el morichal o alguna
+                afectación?
+              </p>
+              <p class="ayuda">
+                Repórtala para organizar la próxima jornada de limpieza o plantear acciones de
+                mejora
+              </p>
+              <div class="campo">
+                <label for="punto">¿Dónde?</label>
+                <input
+                  type="text"
+                  id="punto"
+                  required
+                  [attr.maxlength]="limites.donde"
+                  placeholder="Ej.: orilla norte, detrás de la cerca"
+                  [attr.aria-invalid]="!!errorPunto()"
+                  [value]="punto()"
+                  (input)="punto.set($any($event.target).value); errorPunto.set('')"
+                />
+                <div class="error">{{ errorPunto() }}</div>
+              </div>
+              <div class="campo">
+                <label for="detalle">¿Qué viste?</label>
+                <textarea
+                  id="detalle"
+                  required
+                  [attr.maxlength]="limites.descripcion"
+                  placeholder="Ej.: bolsas acumuladas, caballos comiendo de la basura"
+                  [attr.aria-invalid]="!!errorDetalle()"
+                  [value]="detalle()"
+                  (input)="detalle.set($any($event.target).value); errorDetalle.set('')"
+                ></textarea>
+                <div class="error">{{ errorDetalle() }}</div>
+              </div>
+              <div class="campo">
+                <span class="label">Foto (opcional, máximo 5 MB)</span>
+                <input
+                  #fotoInput
+                  type="file"
+                  id="foto"
+                  accept="image/*"
+                  class="oculto"
+                  (change)="elegirFoto(fotoInput)"
+                />
+                @if (fotoUrl(); as url) {
+                  <div class="foto-prev">
+                    <img [src]="url" alt="Foto adjunta al reporte" />
+                    <div>
+                      <p class="foto-nombre">{{ foto()?.name }}</p>
+                      <button type="button" class="btn-link" (click)="quitarFoto(fotoInput)">
+                        Quitar foto
+                      </button>
+                    </div>
+                  </div>
+                } @else {
+                  <label for="foto" class="adjuntar">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 7h3l2-3h6l2 3h3v13H4z M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
+                    </svg>
+                    Adjuntar una foto
+                  </label>
+                }
+                <div class="error">{{ errorFoto() }}</div>
+              </div>
+              <div>
+                <button type="submit" class="btn btn-moriche" [disabled]="enviandoReporte()">
+                  {{ enviandoReporte() ? 'Enviando…' : 'Enviar reporte' }}
+                </button>
+                <p class="estado" aria-live="polite">{{ estadoReporte() }}</p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

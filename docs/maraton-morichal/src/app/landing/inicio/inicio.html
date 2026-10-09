@@ -1,0 +1,22 @@
+<header class="portada" [class.compacta]="compacta()">
+  <div class="wide contenido">
+    <p class="escena">Vereda Cola de Pato · Acacías, Meta</p>
+    <h1>No veo muy bien, pero huelo todo. Y este año mi morichal huele distinto.</h1>
+    <p class="intro">
+      Soy Palma una osa palmero. Vivo en el borde del morichal de la vereda desde antes de que llegaran tantas
+      casas. Te quiero contar qué le está pasando a mi casa, que también es la tuya, ahora que llegó El Niño.
+    </p>
+    <nav class="botones" aria-label="¿Por dónde quieres empezar?">
+      @for (op of opciones; track op.id) {
+        <button type="button" class="btn" [class]="op.clase" (click)="seleccion.emit(op.id)">
+          {{ op.texto }}
+        </button>
+      }
+    </nav>
+  </div>
+
+  <picture>
+    <source media="(max-width: 900px)" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+    <img class="oso-con-hojas" src="img/decoracion/oso-con-hojas.svg" alt="" aria-hidden="true" fetchpriority="high" />
+  </picture>
+</header>

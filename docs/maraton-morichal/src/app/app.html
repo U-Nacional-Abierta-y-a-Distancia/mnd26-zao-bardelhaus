@@ -1,0 +1,14 @@
+<app-inicio [compacta]="landingVisible()" (seleccion)="elegir($event)" />
+
+@if (landingVisible()) {
+  <main class="landing">
+    <app-conoce-mi-casa />
+    <app-estado-mi-casa />
+    <app-ser-guardian />
+  </main>
+  <app-pie />
+}
+
+<app-comunidad-signal />
+<app-musica-ambiente />
+<app-notificaciones />

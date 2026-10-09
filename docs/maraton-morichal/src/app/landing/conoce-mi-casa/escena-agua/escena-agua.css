@@ -1,0 +1,111 @@
+.titulo { font-size: clamp(1.7rem, 4vw, 2.4rem); color: #fff; text-shadow: 0 2px 14px rgb(0 0 0 / 0.35); }
+
+.panel {
+  position: relative;
+  background: rgb(31 58 43 / 0.72);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+.panel svg { width: 100%; height: auto; display: block; border-radius: 12px; }
+
+.agua { transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1), fill 0.9s ease; }
+.residuo { transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1); transform-box: fill-box; transform-origin: center; }
+
+.control { margin-top: 1.25rem; }
+.control label { display: block; font-weight: 700; margin-bottom: 0.4rem; color: #fff; }
+input[type='range'] { width: 100%; accent-color: var(--moriche); }
+.marcas { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.9rem; color: #c3d1c7; margin-top: 0.25rem; }
+.marcas span { transition: color 0.3s; }
+.marcas .activa { color: var(--sabana); font-weight: 700; }
+
+.lecturas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.25rem; }
+.lecturas div { border-top: 2px solid var(--sabana); padding-top: 0.5rem; }
+.lecturas b { display: block; font-family: var(--serif); font-weight: 400; font-size: 1.6rem; color: #fff; }
+.lecturas span { font-size: 0.92rem; color: #c3d1c7; }
+.nota { margin: 1rem 0 0; }
+
+.invitacion { margin: 0.25rem 0 0; font-weight: 700; color: var(--sabana); }
+app-dialogo-oso + .invitacion, .panel + app-dialogo-oso { margin-top: 1.5rem; }
+
+.wrap { padding-bottom: 2.5rem; }
+
+.ver-conclusion {
+  position: absolute;
+  top: 2.1rem;
+  right: 2.1rem;
+  z-index: 1;
+  padding: 0.55rem 1rem;
+  border: 3px solid #111;
+  border-radius: 999px;
+  background: #ffc400;
+  color: #111;
+  font: 700 0.95rem var(--sans);
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgb(0 0 0 / 0.3);
+  animation: aparecer-boton 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ver-conclusion:hover { transform: scale(1.05); }
+@media (prefers-reduced-motion: no-preference) {
+  .ver-conclusion { animation: aparecer-boton 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), latir 2.4s ease-in-out 1.2s 3; }
+}
+@keyframes aparecer-boton { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: none; } }
+@keyframes latir { 0%, 70%, 100% { transform: scale(1); } 85% { transform: scale(1.08); } }
+
+.conclusion {
+  position: absolute;
+  top: 5rem;
+  right: 1.5rem;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 1rem;
+  align-items: center;
+  width: min(30rem, calc(100% - 3rem));
+  padding: 1.25rem 2.75rem 1.25rem 1rem;
+  border: 4px solid #111;
+  border-radius: 24px;
+  background: #fff;
+  color: var(--tinta);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 0.45);
+  transform-origin: top right;
+}
+.conclusion::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  right: 2.5rem;
+  border-width: 0 12px 14px;
+  border-style: solid;
+  border-color: transparent transparent #111;
+}
+.conclusion-oso { width: 100%; height: auto; transform: scaleX(-1); }
+.conclusion h3 { margin: 0 0 0.3rem; font-size: 1.35rem; color: var(--moriche-osc); }
+.conclusion p { margin: 0; color: var(--tinta); font-family: var(--serif); font-size: 1.05rem; line-height: 1.45; }
+.cerrar {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid #111;
+  border-radius: 50%;
+  background: #ffc400;
+  color: #111;
+  font: 700 1.2rem/1 var(--sans);
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .conclusion { animation: aparecer-boton 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+}
+
+
+@media (max-width: 560px) {
+  .lecturas { grid-template-columns: 1fr; }
+  .ver-conclusion { top: 1.75rem; right: 1.75rem; font-size: 0.85rem; padding: 0.4rem 0.8rem; }
+  .conclusion { top: 4.25rem; right: 1rem; width: calc(100% - 2rem); grid-template-columns: 1fr; text-align: center; padding: 1.25rem; }
+  .conclusion-oso { width: 5rem; margin: 0 auto; }
+  .marcas { font-size: 0.75rem; }
+}

@@ -1,0 +1,123 @@
+<section class="seccion oscuro estado-sec" id="estado" aria-labelledby="estado-titulo">
+  <div class="wrap">
+    <p class="escena">Estado de mi casa</p>
+    <h2 id="estado-titulo">Una estación para escuchar al morichal</h2>
+    <p>
+      Dos sensores miden la temperatura y la humedad del aire: uno dentro del morichal, bajo la sombra de las
+      palmas, y otro afuera, en el potrero. Sus datos se publican aquí, para que cualquier vecino compare, hora por
+      hora, cuánto más fresco se mantiene el morichal y por qué vale la pena cuidarlo.
+    </p>
+    <p class="voz">
+      "Mi sombra y mi agua refrescan el aire. Y esa frescura también protege el agua que guardo, porque se evapora
+      menos."
+    </p>
+
+    <div class="grafica" [attr.aria-busy]="estado() === 'cargando'">
+      <div class="cab">
+        <strong>{{ medida().nombre }} dentro y fuera del morichal</strong>
+        <span class="vivo">
+          @if (estado() === 'cargando') {
+            <span class="etiqueta">Cargando…</span>
+          } @else {
+            @if (estado() === 'listo' && datos().length) {
+              <span class="etiqueta real">Dato en vivo</span>
+            }
+            <button
+              type="button"
+              class="recargar"
+              [class.girando]="actualizando()"
+              [attr.aria-label]="ayudaRecarga()"
+              [attr.title]="ayudaRecarga()"
+              [attr.aria-busy]="actualizando()"
+              [attr.aria-disabled]="actualizando()"
+              (click)="cargar()"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 12a8 8 0 1 1-2.34-5.66" />
+                <path d="M20 4v5h-5" />
+              </svg>
+            </button>
+          }
+        </span>
+      </div>
+
+      <div class="selector" role="group" aria-label="Qué medición ver">
+        @for (m of medidas; track m.tipo) {
+          <button type="button" [attr.aria-pressed]="tipo() === m.tipo" (click)="tipo.set(m.tipo)">{{ m.nombre }}</button>
+        }
+      </div>
+
+      @if (ubicados().length) {
+        <div class="ahora">
+          <div>
+            <span class="punto" [style.background]="COL.dentro"></span>Dentro del morichal
+            <b>{{ ahora().dentro ? coma(ahora().dentro!.valor) + ' ' + medida().unidad : '—' }}</b>
+          </div>
+          <div>
+            <span class="punto" [style.background]="COL.fuera"></span>Afuera
+            <b>{{ ahora().fuera ? coma(ahora().fuera!.valor) + ' ' + medida().unidad : '—' }}</b>
+          </div>
+          <p class="nota">Última medición: {{ ultimaFecha() }}</p>
+        </div>
+
+        <ul class="leyenda" aria-label="Leyenda">
+          <li><span class="trazo" [style.background]="COL.dentro"></span>Dentro del morichal</li>
+          <li><span class="trazo" [style.background]="COL.fuera"></span>Afuera</li>
+        </ul>
+
+        <svg [attr.viewBox]="'0 0 ' + W + ' ' + H" role="img" aria-labelledby="g-titulo">
+          <title id="g-titulo">{{ medida().nombre }} dentro y fuera del morichal</title>
+          @for (g of guias(); track g.v) {
+            <line [attr.x1]="M.l" [attr.x2]="W - M.r" [attr.y1]="g.y" [attr.y2]="g.y" stroke="#E4E1D6" />
+            <text [attr.x]="M.l - 8" [attr.y]="g.y + 4" font-size="12" text-anchor="end" fill="#4D5A53">{{ g.v }}</text>
+          }
+          <text [attr.x]="M.l - 8" [attr.y]="M.t - 10" font-size="11" text-anchor="end" fill="#4D5A53">{{ medida().unidad }}</text>
+          @if (franja()) {
+            <polygon [attr.points]="franja()" fill="#D9B65F" opacity=".25" />
+          }
+          <path [attr.d]="lineaFuera()" fill="none" [attr.stroke]="COL.fuera" stroke-width="3" stroke-linejoin="round" />
+          <path [attr.d]="lineaDentro()" fill="none" [attr.stroke]="COL.dentro" stroke-width="3" stroke-linejoin="round" />
+          @for (p of ubicados(); track p.fecha.getTime()) {
+            @if (p.yFuera != null) {
+              <circle [attr.cx]="p.x" [attr.cy]="p.yFuera" r="3.5" [attr.fill]="COL.fuera">
+                <title>Afuera, {{ p.hora }}: {{ coma(p.fuera!) }} {{ medida().unidad }}</title>
+              </circle>
+            }
+            @if (p.yDentro != null) {
+              <circle [attr.cx]="p.x" [attr.cy]="p.yDentro" r="3.5" [attr.fill]="COL.dentro">
+                <title>Dentro del morichal, {{ p.hora }}: {{ coma(p.dentro!) }} {{ medida().unidad }}</title>
+              </circle>
+            }
+          }
+          @for (e of etiquetasX(); track e.x) {
+            <text [attr.x]="e.x" [attr.y]="H - 10" font-size="12" [attr.text-anchor]="e.anchor" fill="#4D5A53">{{ e.texto }}</text>
+          }
+        </svg>
+
+        @if (mayorDiferencia(); as d) {
+          <p class="dif">
+            A las {{ d.hora }}, dentro del morichal
+            @if (tipo() === 'TEMPERATURA') {
+              hace <span [style.color]="COL.dentro">{{ d.dif }} °C {{ d.menos ? 'menos' : 'más' }}</span> que afuera.
+            } @else {
+              hay <span [style.color]="COL.dentro">{{ d.dif }} % {{ d.menos ? 'menos' : 'más' }} de humedad</span> que afuera.
+            }
+          </p>
+        } @else {
+          <p class="nota">
+            Cuando haya mediciones de los dos sensores en el mismo momento, aquí verás cuánto cambia
+            {{ tipo() === 'TEMPERATURA' ? 'la temperatura' : 'la humedad' }} entre dentro y fuera del morichal.
+          </p>
+        }
+      } @else if (estado() === 'listo') {
+        <p class="vacio">Todavía no hay mediciones de {{ medida().nombre.toLowerCase() }}.</p>
+      } @else if (estado() === 'error') {
+        <p class="vacio">No pudimos conectar con la estación. Inténtalo de nuevo más tarde.</p>
+      }
+
+      <p class="nota">Medido con los sensores del equipo dentro y fuera del morichal.</p>
+    </div>
+  </div>
+
+  <img class="hoja-borde" src="img/decoracion/hoja-higuera.png" alt="" aria-hidden="true" />
+</section>

@@ -1,0 +1,33 @@
+# Despliega el front de morichal en el servidor local (k3s) con el runner instalado en el mismo servidor.
+#   push a main → https://narrativa-morichal.bardelhaus.com
+name: Desplegar front
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: desplegar-front
+  cancel-in-progress: false
+
+jobs:
+  desplegar:
+    runs-on: [self-hosted, bardelhaus-server]
+    env:
+      IMAGE: localhost:5000/morichal-front:${{ github.sha }}
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      # Angular se compila dentro del Dockerfile, así que el runner no necesita Node
+      - name: Construir y subir la imagen
+        run: |
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
+
+      - name: Desplegar en k3s (morichal)
+        run: |
+          envsubst '$IMAGE' < deployment/k8s/front.yaml | kubectl apply -f -
+          kubectl -n morichal rollout status deployment/morichal-front --timeout=5m

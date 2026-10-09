@@ -1,0 +1,4 @@
+@media (prefers-reduced-motion: no-preference) {
+  .landing { animation: aparecer 0.6s ease-out; }
+  @keyframes aparecer { from { opacity: 0; } to { opacity: 1; } }
+}
