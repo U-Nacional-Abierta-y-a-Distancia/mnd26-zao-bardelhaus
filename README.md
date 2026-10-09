@@ -2,7 +2,7 @@
   <img src="assets/encabezado.png" alt="UNAD, Universidad Nacional Abierta y a Distancia, y Segundas Olimpiadas Unadistas 2026" width="560">
 </p>
 
-# Nombre del proyecto
+# Guardianes del Morichal
 
 > Maratón de Innovación en Narrativas Digitales · Segundas Olimpiadas Unadistas 2026 · Fase zonal
 
@@ -42,7 +42,7 @@ Solo debe ingresar al enlace de la aplicación web https://narrativa-morichal.ba
 | [Ramas 1](https://www.magnific.com/free-psd/spring-branch-with-fresh-green-leaves-symbol-renewal-growth_408654091.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
 | [Ramas 2](https://www.magnific.com/free-psd/spring-branch-new-beginning_409104062.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
 | [Colibrí](https://www.magnific.com/free-psd/hummingbird-bird-isolated_358181081.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
-| [Tucaneta](https://www.magnific.com/premium-ai-image/toucan-flight-isolated-white-background_265242127.htm) (imagen generada con IA) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
+| [Tucaneta](https://www.magnific.com/premium-ai-image/toucan-flight-isolated-white-background_265242127.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
 | [Tortuga](https://www.magnific.com/premium-photo/turtle-animal-white-background_18111874.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
 | [Oso hormiguero](https://www.magnific.com/premium-psd/young-giant-anteater-isolated-transparent-background_408743956.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
 | [Palmeras morichal](https://www.magnific.com/es/vector-gratis/paisaje-natural-fondo-vacio_5875377.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
@@ -51,8 +51,8 @@ Solo debe ingresar al enlace de la aplicación web https://narrativa-morichal.ba
 | [Pasto 1](https://www.magnific.com/es/vector-premium/hierba-verde-planta-hierba-realista_152731740.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
 | [Pasto 2](https://www.magnific.com/es/psd-gratis/doce-ilustraciones-realistas-hierba-plantas_405491530.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
 | [Gota](https://www.magnific.com/free-psd/clear-blue-water-droplet_427256977.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
-| [Caño](https://www.magnific.com/premium-photo/pure-drinking-water-stream-green-valley-white-background-ar-169-v-7-job-id-18110b6f0b6249ef876034da19bb04b0_425088857.htm) (imagen generada con IA) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
-| [Agua con basura](https://www.magnific.com/premium-ai-image/dirty-beach-river-lake-sea-trash-shore-pollution-nature-dirty-beach-human-waste-water_283591902.htm) (imagen generada con IA) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
+| [Caño](https://www.magnific.com/premium-photo/pure-drinking-water-stream-green-valley-white-background-ar-169-v-7-job-id-18110b6f0b6249ef876034da19bb04b0_425088857.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
+| [Agua con basura](https://www.magnific.com/premium-ai-image/dirty-beach-river-lake-sea-trash-shore-pollution-nature-dirty-beach-human-waste-water_283591902.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
 | [Suelo seco](https://www.magnific.com/free-photo/dry-cracked-ground-texture_1017734.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
 | [Mono](https://www.magnific.com/free-psd/adorable-squirrel-monkey-illustration_406457468.htm) (imagen) | [Autor] – Magnific | Licencia Premium de Magnific – uso comercial permitido, sin atribución obligatoria |
 | [Ícono palma](https://www.flaticon.es/icono-gratis/palma-de-cera_3187530) | [Autor] – Flaticon | Licencia Gratuita de Flaticon – uso personal y comercial permitido con atribución obligatoria |
