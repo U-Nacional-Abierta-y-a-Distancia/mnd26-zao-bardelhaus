@@ -1,0 +1,75 @@
+.estado-sec { position: relative; z-index: 1; overflow-x: clip; }
+.hoja-borde {
+  position: absolute;
+  left: -5rem;
+  bottom: -6.5rem;
+  width: 15rem;
+  height: auto;
+  transform: rotate(135deg) scaleY(-1);
+  pointer-events: none;
+  filter: drop-shadow(0 8px 14px rgb(0 0 0 / 0.25));
+}
+@media (max-width: 1000px) { .hoja-borde { display: none; } }
+
+.grafica {
+  background: #fff;
+  color: var(--tinta);
+  border: 1px solid var(--linea);
+  border-radius: 16px;
+  padding: 1.2rem;
+  margin-top: 1.5rem;
+}
+.grafica svg { width: 100%; height: auto; display: block; }
+.grafica .nota { color: var(--tinta-2); margin: 0.75rem 0 0; }
+.vivo { display: inline-flex; align-items: center; gap: 0.5rem; }
+.recargar {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid var(--linea);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--hoja);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.recargar:hover:not([aria-disabled='true']) { background: #eef4ea; border-color: var(--hoja); }
+.recargar[aria-disabled='true'] { cursor: progress; }
+.recargar svg { width: 1.05rem; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.recargar.girando svg { animation: girar 0.9s linear infinite; }
+@keyframes girar { to { transform: rotate(360deg); } }
+
+.cab {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.selector { display: inline-flex; background: #ece7d8; border-radius: 999px; padding: 0.25rem; margin-bottom: 1rem; }
+.selector button {
+  font: 700 0.95rem var(--sans);
+  padding: 0.45rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--tinta-2);
+  cursor: pointer;
+}
+.selector button[aria-pressed='true'] { background: var(--morichal); color: #fff; }
+
+.ahora { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; align-items: baseline; margin-bottom: 0.5rem; font-size: 0.95rem; color: var(--tinta-2); }
+.ahora b { font-family: var(--serif); font-weight: 400; font-size: 1.5rem; color: var(--tinta); margin-left: 0.5rem; }
+.ahora .nota { flex-basis: 100%; margin: 0; }
+.punto { display: inline-block; width: 0.7rem; height: 0.7rem; border-radius: 50%; margin-right: 0.4rem; }
+
+.dif { margin: 0.75rem 0 0.25rem; font-weight: 700; color: var(--tinta); }
+.vacio { color: var(--tinta-2); padding: 2rem 0; text-align: center; margin: 0; }
+
+.leyenda { display: flex; flex-wrap: wrap; gap: 0.4rem 1.25rem; list-style: none; padding: 0; margin: 0.75rem 0 0.25rem; font-size: 0.9rem; color: var(--tinta-2); }
+.leyenda li { display: flex; align-items: center; gap: 0.45rem; }
+.trazo { display: inline-block; width: 1.4rem; height: 3px; border-radius: 2px; }

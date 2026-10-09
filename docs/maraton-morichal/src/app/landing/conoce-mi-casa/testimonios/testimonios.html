@@ -1,0 +1,28 @@
+<span class="testimonios">
+  <span class="etiqueta-t">Escúchalos:</span>
+  @for (t of testimonios; track t.foto) {
+    <button type="button" class="cara" [attr.aria-label]="'Ver el testimonio de ' + t.nombre" (click)="abrir(t)">
+      <img [src]="t.foto" alt="" />
+      <span class="play" aria-hidden="true"></span>
+    </button>
+  }
+</span>
+
+<dialog #ventana class="ventana" aria-label="Testimonio en video" (close)="alCerrar()" (click)="clicFondo($event)">
+  <div class="contenido">
+    <div class="cabecera">
+      <p>{{ abierto()?.nombre }}</p>
+      <button type="button" class="cerrar" aria-label="Cerrar video" (click)="cerrar()">×</button>
+    </div>
+    <div class="video">
+      @if (video(); as url) {
+        <iframe
+          [src]="url"
+          [title]="'Testimonio de ' + abierto()?.nombre"
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+          allowfullscreen
+        ></iframe>
+      }
+    </div>
+  </div>
+</dialog>

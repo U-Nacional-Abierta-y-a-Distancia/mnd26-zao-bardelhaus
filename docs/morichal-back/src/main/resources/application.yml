@@ -1,0 +1,31 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: "morichal"
+  datasource:
+    url: "jdbc:postgresql://${DB_DATASOURCE_HOST:localhost}:${DB_DATASOURCE_PORT:5432}/${DB_NAME:morichal}"
+    username: "${DB_DATASOURCE_USERNAME:postgres}"
+    password: "${DB_DATASOURCE_PASSWORD:1234}"
+    driverClassName: "org.postgresql.Driver"
+  jpa:
+    databasePlatform: "org.hibernate.dialect.PostgreSQLDialect"
+    show-sql: true
+    hibernate:
+      ddl-auto: "none"
+morichal:
+  evidencias:
+    directorio: "${EVIDENCIAS_DIRECTORIO:evidencias}"
+  signal:
+    habilitado: ${SIGNAL_HABILITADO:true}
+    url: "${SIGNAL_URL:http://localhost:8081}"
+    numero: "${SIGNAL_NUMERO:+573142220567}"
+    grupo: "${SIGNAL_GRUPO:group.KzB4eS9DRjN3b09wMGxMZW53dDhUdlJmOTNvbVgzU0NjTk55UXRxaHJlUT0=}"
+  mqtt:
+    habilitado: ${MQTT_HABILITADO:true}
+    broker: "${MQTT_BROKER:tcp://public.cloud.shiftr.io:1883}"
+    usuario: "${MQTT_USUARIO:public}"
+    clave: "${MQTT_CLAVE:public}"
+    topico: "${MQTT_TOPICO:morichal/sensores}"
+cors:
+  allowed-origins: "${CORS_ALLOWED_ORIGINS:http://localhost:*,http://127.0.0.1:*,http://localhost:59001/}"

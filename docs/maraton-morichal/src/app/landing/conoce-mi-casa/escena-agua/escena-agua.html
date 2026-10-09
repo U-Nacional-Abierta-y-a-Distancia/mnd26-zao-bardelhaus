@@ -1,0 +1,94 @@
+<div class="escena-paisaje oscuro">
+  <div class="wrap">
+    <app-dialogo-oso lado="derecha" [larga]="true">
+      Mi nariz encuentra la basura antes que tus ojos: bolsas, empaques, restos de comida. Ya he visto a los caballos
+      hurgando en ella más que los perros. Y cuando llueve, lo que queda en la orilla termina en el agua.
+    </app-dialogo-oso>
+    <p class="invitacion">Interactua con la actividad siguiente y observa como se comporta la basura en el agua</p>
+
+    <div class="panel">
+      @if (interactuo()) {
+        <button
+          #botonConclusion
+          type="button"
+          class="ver-conclusion"
+          aria-controls="conclusion"
+          [attr.aria-expanded]="conclusionAbierta()"
+          (click)="conclusionAbierta() ? cerrarConclusion() : abrirConclusion()"
+        >
+          Ver conclusión
+        </button>
+      }
+      @if (conclusionAbierta()) {
+        <div
+          id="conclusion"
+          class="conclusion"
+          role="dialog"
+          aria-labelledby="conclusion-titulo"
+          (keydown.escape)="cerrarConclusion()"
+        >
+          <img class="conclusion-oso" src="img/oso-palmero.png" alt="" />
+          <div>
+            <h3 id="conclusion-titulo">Conclusión</h3>
+            <p>
+              La basura no cambió. Es la misma bolsa, el mismo empaque. Lo que cambió es el agua. Con menos agua, lo
+              que botamos queda más concentrado, y esa es el agua que tomamos los animales en plena sequía.
+            </p>
+          </div>
+          <button #cerrarBoton type="button" class="cerrar" aria-label="Cerrar conclusión" (click)="cerrarConclusion()">×</button>
+        </div>
+      }
+      <svg viewBox="0 0 600 240" role="img" aria-labelledby="corte-titulo">
+        <title id="corte-titulo">Corte del morichal: el agua baja y la basura se concentra</title>
+        <rect x="0" y="0" width="600" height="240" fill="#2A4C38" />
+        <rect class="agua" x="0" y="0" width="600" height="240" [style.fill]="actual().color" [style.transform]="'translateY(' + actual().top + 'px)'" />
+        @for (r of residuos(); track $index) {
+          @if (conImagenes) {
+            <image
+              class="residuo"
+              [attr.href]="r.imagen"
+              [attr.width]="tamano"
+              [attr.height]="tamano"
+              [style.transform]="'translate(' + r.x + 'px,' + r.y + 'px) rotate(' + r.giro + 'deg)'"
+            />
+          } @else {
+            <rect class="residuo" width="10" height="7" rx="2" opacity=".9" [attr.fill]="r.color" [style.transform]="'translate(' + r.x + 'px,' + r.y + 'px)'" />
+          }
+        }
+        <path d="M0,0 L0,240 L140,240 C100,180 60,110 0,0 Z" fill="#7A6142" />
+        <path d="M600,0 L600,240 L460,240 C500,180 540,110 600,0 Z" fill="#7A6142" />
+      </svg>
+
+      <div class="control">
+        <label for="nivel">Época del año</label>
+        <input
+          type="range"
+          id="nivel"
+          min="0"
+          [max]="etapas.length - 1"
+          step="1"
+          [value]="etapa()"
+          aria-describedby="agua-voz"
+          [attr.aria-valuetext]="actual().nombre"
+          (input)="cambiarEtapa($any($event.target).value)"
+        />
+        <div class="marcas">
+          @for (e of etapas; track e.nombre; let i = $index) {
+            <span [class.activa]="i === etapa()">{{ e.nombre }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="lecturas" aria-live="polite">
+        <div><b>{{ actual().agua }}</b><span>Agua en el morichal</span></div>
+        <div><b>Igual</b><span>Cantidad de basura</span></div>
+        <div><b>{{ concentracion() }}</b><span>Qué tan concentrada queda</span></div>
+      </div>
+    </div>
+
+    @for (e of [actual()]; track e.nombre) {
+      <app-dialogo-oso id="agua-voz" aria-live="polite">{{ e.voz }}</app-dialogo-oso>
+    }
+
+  </div>
+</div>

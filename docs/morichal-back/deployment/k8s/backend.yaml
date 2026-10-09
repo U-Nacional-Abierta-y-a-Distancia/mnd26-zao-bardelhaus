@@ -1,0 +1,121 @@
+# Backend de morichal en k3s (un solo ambiente: namespace "morichal").
+# El pipeline reemplaza ${IMAGE} con envsubst.
+# Las contraseñas NO van aquí: viven en el Secret "morichal-backend" (se crea a mano en el servidor).
+
+# Volumen persistente para las imágenes de evidencia: sobrevive a reinicios y despliegues
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: morichal-evidencias
+  namespace: morichal
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: morichal-backend
+  namespace: morichal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: morichal-backend
+  # Recreate: apaga el pod viejo antes de arrancar el nuevo. Así nunca hay dos instancias
+  # escuchando MQTT al tiempo (se guardarían lecturas duplicadas). Implica unos segundos sin servicio al desplegar.
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: morichal-backend
+    spec:
+      containers:
+        - name: backend
+          image: ${IMAGE}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_DATASOURCE_HOST
+              value: "192.168.1.150"
+            - name: DB_DATASOURCE_PORT
+              value: "5432"
+            # Spring recibe la petición por http (el https termina en Cloudflare) y la toma como de otro origen
+            - name: CORS_ALLOWED_ORIGINS
+              value: https://narrativa-morichal.bardelhaus.com
+            - name: EVIDENCIAS_DIRECTORIO
+              value: /data/evidencias
+            # signal-api corre en el namespace morichal (desplegado aparte)
+            - name: SIGNAL_HABILITADO
+              value: "true"
+            - name: SIGNAL_URL
+              value: http://signal-api:8080
+          # DB_NAME, DB_DATASOURCE_USERNAME, DB_DATASOURCE_PASSWORD
+          envFrom:
+            - secretRef:
+                name: morichal-backend
+          volumeMounts:
+            - name: evidencias
+              mountPath: /data/evidencias
+          resources:
+            requests:
+              cpu: 100m
+              memory: 384Mi
+            limits:
+              memory: 768Mi
+          # Sin Actuator: se revisa que el puerto 8080 responda. Spring tarda en arrancar (hasta 150 s)
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            periodSeconds: 5
+            failureThreshold: 30
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            periodSeconds: 5
+      volumes:
+        - name: evidencias
+          persistentVolumeClaim:
+            claimName: morichal-evidencias
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: morichal-backend
+  namespace: morichal
+spec:
+  selector:
+    app: morichal-backend
+  ports:
+    - port: 8080
+      targetPort: 8080
+---
+# Ingress: narrativa-morichal.bardelhaus.com/api/... va a este backend (los controladores ya usan /api)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: morichal-backend
+  namespace: morichal
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: narrativa-morichal.bardelhaus.com
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: morichal-backend
+                port:
+                  number: 8080

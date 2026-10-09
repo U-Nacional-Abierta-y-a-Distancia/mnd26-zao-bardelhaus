@@ -1,0 +1,33 @@
+# Despliega el backend de morichal en el servidor local (k3s) con el runner instalado en el mismo servidor.
+#   push a main → https://narrativa-morichal.bardelhaus.com/api
+name: Desplegar backend
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: desplegar-backend
+  cancel-in-progress: false
+
+jobs:
+  desplegar:
+    runs-on: [self-hosted, bardelhaus-server]
+    env:
+      IMAGE: localhost:5000/morichal-backend:${{ github.sha }}
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      # El jar se compila dentro del Dockerfile
+      - name: Construir y subir la imagen
+        run: |
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
+
+      - name: Desplegar en k3s (morichal)
+        run: |
+          envsubst '$IMAGE' < deployment/k8s/backend.yaml | kubectl apply -f -
+          kubectl -n morichal rollout status deployment/morichal-backend --timeout=5m

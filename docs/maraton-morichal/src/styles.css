@@ -1,0 +1,71 @@
+
+@import 'tailwindcss';
+
+:root {
+  --morichal: #1f3a2b;
+  --morichal-2: #2a4c38;
+  --moriche: #c7683a;
+  --moriche-osc: #8e4423;
+  --hoja: #5e8a4a;
+  --sabana: #d9b65f;
+  --agua: #5b8c8a;
+  --oso: #6e5e50;
+  --papel: #f5f3ec;
+  --tinta: #1f2924;
+  --tinta-2: #4d5a53;
+  --linea: #d2d6c8;
+  --serif: 'Young Serif', Georgia, serif;
+  --sans: 'Atkinson Hyperlegible', 'Segoe UI', Arial, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation: none !important; transition: none !important; }
+}
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--sans);
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+a { color: var(--moriche-osc); }
+:focus-visible { outline: 3px solid var(--moriche); outline-offset: 3px; }
+
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.15; margin: 0 0 0.6em; }
+h2 { font-size: clamp(1.9rem, 4.5vw, 2.8rem); }
+h3 { font-size: 1.35rem; }
+p { margin: 0 0 1em; }
+
+.wrap { max-width: 42rem; margin: 0 auto; padding: 0 1.25rem; }
+.wide { max-width: 64rem; margin: 0 auto; padding: 0 1.25rem; }
+.seccion { padding: 5rem 0; scroll-margin-top: 0; }
+.escena { font-size: 1rem; color: var(--moriche-osc); margin-bottom: 0.4rem; font-weight: 700; letter-spacing: 0.02em; }
+.oscuro { background: var(--morichal); color: var(--papel); }
+.oscuro p { color: #d6e1d8; }
+.oscuro .escena { color: var(--sabana); }
+.voz { font-family: var(--serif); font-size: 1.3rem; line-height: 1.4; color: var(--moriche-osc); border-left: 4px solid var(--moriche); padding-left: 1rem; margin: 1.5rem 0; }
+.oscuro .voz { color: var(--sabana); border-color: var(--sabana); }
+.nota { font-size: 0.9rem; color: var(--tinta-2); }
+.oscuro .nota { color: #a9bdaf; }
+.etiqueta { display: inline-block; font-size: 0.8rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px; background: var(--sabana); color: var(--morichal); vertical-align: middle; }
+.etiqueta.real { background: var(--hoja); color: #fff; }
+
+.btn { display: inline-block; font: 700 1rem var(--sans); padding: 0.85rem 1.3rem; border-radius: 999px; border: 2px solid transparent; text-decoration: none; cursor: pointer; }
+.btn-moriche { background: var(--moriche); color: #fff; }
+.btn-sabana { background: var(--sabana); color: var(--morichal); }
+.btn-borde { border-color: var(--sabana); color: var(--sabana); background: transparent; }
+.btn-oscuro { background: var(--morichal); color: var(--papel); }
+.btn:hover { filter: brightness(1.08); }
+.btn:disabled { opacity: 0.6; cursor: wait; filter: none; }
+
+.escena-paisaje {
+  padding: 2.5rem 0 0;
+  background:
+    linear-gradient(180deg, rgb(31 58 43 / 0.7) 0%, rgb(31 58 43 / 0.78) 55%, rgb(31 58 43 / 0.9) 100%),
+    url('/img/fondo-morichal.jpg') center / cover no-repeat,
+    var(--morichal);
+}

@@ -1,0 +1,72 @@
+# signal-cli-rest-api en k3s: el backend publica los reportes en el grupo de Signal a través de este servicio.
+# Solo es accesible dentro del clúster (http://signal-api:8080), no tiene Ingress.
+# La cuenta vinculada (número) vive en el volumen signal-data: se vincula una sola vez escaneando un QR.
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: signal-data
+  namespace: morichal
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signal-api
+  namespace: morichal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: signal-api
+  # Una sola instancia a la vez: dos procesos usando la misma cuenta de Signal se pisan
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: signal-api
+    spec:
+      containers:
+        - name: signal-api
+          image: bbernhard/signal-cli-rest-api:0.101
+          env:
+            - name: MODE
+              value: json-rpc
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: signal-data
+              mountPath: /home/.local/share/signal-cli
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              memory: 768Mi
+          readinessProbe:
+            httpGet:
+              path: /v1/about
+              port: 8080
+            periodSeconds: 10
+      volumes:
+        - name: signal-data
+          persistentVolumeClaim:
+            claimName: signal-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: signal-api
+  namespace: morichal
+spec:
+  selector:
+    app: signal-api
+  ports:
+    - port: 8080
+      targetPort: 8080

@@ -1,0 +1,58 @@
+<div class="escena-paisaje oscuro">
+  <div class="wrap">
+    <app-dialogo-oso lado="derecha" [larga]="true">
+      <span class="frase-caja" aria-live="polite">
+        @for (f of [frase()]; track indice()) {
+          <span class="frase">{{ f }}</span>
+        }
+      </span>
+      @if (indice() === 0) {
+        <app-testimonios />
+      }
+      <span class="pasos">
+        <button type="button" class="paso" aria-label="Frase anterior" [attr.aria-disabled]="indice() === 0" (click)="mover(-1)">
+          ‹
+        </button>
+        <span class="contador" aria-hidden="true">
+          @for (x of frases; track $index) {
+            <span class="marca" [class.activa]="$index === indice()"></span>
+          }
+        </span>
+        <span class="sr-only">Frase {{ indice() + 1 }} de {{ frases.length }}</span>
+        <button
+          type="button"
+          class="paso"
+          aria-label="Frase siguiente"
+          [attr.aria-disabled]="indice() === frases.length - 1"
+          (click)="mover(1)"
+        >
+          ›
+        </button>
+      </span>
+    </app-dialogo-oso>
+
+    <div class="destinos" role="group" aria-label="Cómo separar la basura en casa">
+      @for (d of destinos; track d.numero; let i = $index) {
+        <button
+          type="button"
+          class="destino"
+          [style.--color]="d.color"
+          [attr.aria-pressed]="i === elegido()"
+          aria-controls="separar-voz"
+          (click)="elegido.set(i)"
+        >
+          <span class="n">{{ d.numero }}</span>
+          <span class="titulo">{{ d.titulo }}</span>
+        </button>
+      }
+    </div>
+
+    @for (d of [destino()]; track d.numero) {
+      <app-dialogo-oso id="separar-voz" aria-live="polite" [larga]="true">
+        <strong class="destino-elegido">{{ d.titulo }}.</strong> {{ d.detalle }}
+      </app-dialogo-oso>
+    }
+
+    <p class="regla">Nada al morichal ni a su orilla. Nada al fuego.</p>
+  </div>
+</div>

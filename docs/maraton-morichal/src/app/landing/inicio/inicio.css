@@ -1,0 +1,45 @@
+.portada {
+  --ancho: min(72vw, 1000px, calc((100dvh - 4rem) * 297 / 210));
+  --subida: 2.5rem;
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  color: var(--papel);
+  background: var(--morichal);
+  overflow-x: clip;
+}
+.portada.compacta { min-height: calc(var(--ancho) * 210 / 297 + var(--subida)); }
+
+.contenido { position: relative; z-index: 1; width: 100%; padding-top: 2.5rem; padding-bottom: 1rem; }
+.escena { color: var(--sabana); }
+
+h1 {
+  font-size: clamp(2.3rem, 5.2vw, 3.9rem);
+  max-width: 15ch;
+  margin-bottom: 0.5em;
+}
+
+.intro { max-width: 32rem; color: #e4ece6; font-size: 1.15rem; }
+
+.botones { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+.btn-borde { background: rgb(31 58 43 / 0.6); }
+
+.oso-con-hojas {
+  position: absolute;
+  right: calc(var(--ancho) * -0.1);
+  bottom: var(--subida);
+  width: var(--ancho);
+  height: auto;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
+}
+@media (max-width: 1200px) {
+  .oso-con-hojas { right: calc(var(--ancho) * -0.18); }
+}
+
+@media (max-width: 900px) {
+  .portada.compacta { min-height: 0; }
+  .oso-con-hojas { display: none; }
+}

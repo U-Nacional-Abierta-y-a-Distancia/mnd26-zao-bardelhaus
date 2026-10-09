@@ -1,0 +1,73 @@
+<div class="escena-paisaje oscuro">
+  <div class="wrap">
+    @if (!terminado()) {
+      <div class="progreso" aria-hidden="true">
+        @for (p of preguntas; track $index) {
+          <span class="marca" [class.hecha]="elegidas()[$index] != null" [class.actual]="$index === indice()"></span>
+        }
+      </div>
+      <div class="encabezado">
+        <p class="tema">Pregunta {{ indice() + 1 }} de {{ preguntas.length }} · {{ pregunta().tema }}</p>
+        @if (respuesta() && !retroAbierta()) {
+          <button type="button" class="seguir" (click)="siguiente()">
+            {{ esUltima() ? 'Ver cómo me fue' : 'Siguiente' }} →
+          </button>
+        }
+      </div>
+
+      @for (p of [pregunta()]; track indice()) {
+        <app-dialogo-oso lado="derecha">{{ p.pregunta }}</app-dialogo-oso>
+      }
+
+      <div class="opciones" role="group" [attr.aria-label]="pregunta().pregunta">
+        @for (o of pregunta().opciones; track o.texto; let i = $index) {
+          <button
+            type="button"
+            class="opcion"
+            [class.correcta]="elegida() != null && o.correcta"
+            [class.incorrecta]="elegida() === i && !o.correcta"
+            [attr.aria-pressed]="elegida() === i"
+            [attr.aria-disabled]="elegida() != null"
+            (click)="elegir(i)"
+          >
+            <span class="letra">{{ 'ABC'[i] }}</span>
+            <span>{{ o.texto }}</span>
+          </button>
+        }
+      </div>
+
+      <dialog #retro class="retro" aria-labelledby="retro-veredicto" (close)="retroAbierta.set(false)">
+        @if (respuesta(); as r) {
+          <img class="retro-oso" src="img/oso-palmero.png" alt="" />
+          <div class="retro-texto">
+            <p class="veredicto" id="retro-veredicto" [class.bien]="r.correcta">{{ r.correcta ? '¡Bien!' : 'Mmm… no tanto.' }}</p>
+            <p>{{ r.respuesta }}</p>
+            <button type="button" class="btn btn-moriche" (click)="siguiente()">
+              {{ esUltima() ? 'Ver cómo me fue' : 'Siguiente pregunta' }} →
+            </button>
+          </div>
+          <button type="button" class="cerrar" aria-label="Cerrar y ver las opciones" (click)="cerrarRetro()">×</button>
+        }
+      </dialog>
+    } @else {
+      <div class="final">
+        <p class="puntaje">
+          <b>{{ aciertos() }}</b> de {{ preguntas.length }}
+        </p>
+        <app-dialogo-oso lado="derecha" [larga]="true" aria-live="polite">
+          @if (aciertos() === preguntas.length) {
+            ¡Ya hueles como yo! Sabes qué le pasa a mi casa y qué hacer con la basura. Ahora hazlo de verdad:
+            registra tu hogar como guardián del morichal.
+          } @else {
+            Vas bien. Cada respuesta te acerca a cuidar mi casa. Puedes intentarlo de nuevo, o dar el paso de verdad:
+            registra tu hogar como guardián del morichal.
+          }
+        </app-dialogo-oso>
+        <div class="acciones">
+          <button type="button" class="btn btn-borde" (click)="reiniciar()">Intentar de nuevo</button>
+          <a class="btn btn-moriche" href="#guardian">Ser guardián del morichal</a>
+        </div>
+      </div>
+    }
+  </div>
+</div>

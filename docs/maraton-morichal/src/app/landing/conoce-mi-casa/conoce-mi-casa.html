@@ -1,0 +1,91 @@
+<section class="seccion casa" id="casa" aria-label="Conoce mi casa">
+  <div class="wide">
+
+    <div
+      class="carrusel"
+      role="region"
+      aria-roledescription="carrusel"
+      aria-label="Recorrido por mi casa"
+      tabindex="0"
+      (keydown)="teclado($event)"
+    >
+      <div class="ventana" [style.height.px]="alturas()[actual()] || null">
+        <div class="pista" [style.transform]="'translateX(-' + actual() * 100 + '%)'">
+          @for (d of diapositivas; track d.hash; let i = $index) {
+            <div
+              #slide
+              class="diapositiva"
+              [class.activa]="i === actual()"
+              role="group"
+              aria-roledescription="diapositiva"
+              [attr.aria-label]="i + 1 + ' de ' + diapositivas.length + ': ' + d.nombre"
+              [attr.aria-hidden]="i !== actual()"
+              [attr.inert]="i !== actual() ? '' : null"
+            >
+              @switch (d.hash) {
+                @case ('casa') {
+                  <div class="genially">
+                    <iframe
+                      title="Conoce mi casa (Genially)"
+                      [src]="genially"
+                      allowfullscreen
+                      allow="fullscreen"
+                    ></iframe>
+                  </div>
+                }
+                @case ('agua') {
+                  <app-escena-agua />
+                }
+                @case ('separar') {
+                  <app-escena-separar />
+                }
+                @case ('te-toca') {
+                  <app-escena-te-toca />
+                }
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="flecha anterior"
+        aria-label="Diapositiva anterior"
+        [class.oculta]="actual() === 0"
+        (click)="ir(actual() - 1)"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7" /></svg>
+      </button>
+      @if (actual() !== 0) {
+        <button
+          type="button"
+          class="flecha siguiente"
+          aria-label="Siguiente diapositiva"
+          [class.oculta]="actual() === diapositivas.length - 1"
+          (click)="ir(actual() + 1)"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+        </button>
+      }
+    </div>
+
+    <div class="puntos" role="tablist" aria-label="Elegir diapositiva">
+      @for (d of diapositivas; track d.hash; let i = $index) {
+        <button
+          type="button"
+          role="tab"
+          [attr.aria-selected]="i === actual()"
+          [attr.aria-label]="d.nombre"
+          [class.activo]="i === actual()"
+          (click)="ir(i)"
+        >
+          <span class="punto"></span><span class="nombre">{{ d.nombre }}</span>
+        </button>
+      }
+    </div>
+
+    <img class="hoja-deco ramita" src="img/decoracion/hoja-ramita.png" alt="" aria-hidden="true" />
+    <img class="hoja-deco monstera" src="img/decoracion/hoja-monstera.png" alt="" aria-hidden="true" />
+  </div>
+</section>

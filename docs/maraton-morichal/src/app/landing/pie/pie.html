@@ -1,0 +1,61 @@
+<footer>
+  <div class="wide">
+    <div class="columnas">
+      <div class="marca">
+        <p class="nombre">Guardianes del morichal</p>
+        <p>Vereda Cola de Pato · Acacías, Meta.</p>
+        <p class="lema">Cuidar el morichal es cuidar el lugar donde nace nuestra agua.</p>
+      </div>
+
+      <div>
+        <h3>Contactos útiles</h3>
+        <ul class="contactos">
+          <li><span>Emergencias</span> <a href="tel:123">123</a></li>
+          <li><span>Cormacarena</span> Autoridad ambiental del Meta. Verifica sus líneas actuales en su sitio oficial.</li>
+          <li><span>Alcaldía de Acacías</span> Solicitudes sobre el servicio de aseo en la vereda.</li>
+        </ul>
+      </div>
+
+      <div class="fuentes">
+        <h3>Fuentes</h3>
+        <ul>
+          <li>
+            IDEAM (2026). Ideam y Minambiente alertan de 90 % de probabilidad de llegada del fenómeno de El Niño para
+            septiembre de 2026.
+          </li>
+          <li>
+            Ministerio de Ambiente y Desarrollo Sostenible (2026). Gobierno confirma inicio del fenómeno de El Niño y
+            alerta sobre su alcance.
+          </li>
+          <li>
+            Ministerio de Ambiente y Desarrollo Sostenible. Resolución 1263 de 2018, sobre la sostenibilidad y gestión
+            integral de los ecosistemas de morichales.
+          </li>
+          <li>Imágenes históricas: Google Earth Pro.</li>
+          <li>
+            Magnific. (2026). Plataforma de creación y edición de contenido visual con inteligencia artificial.
+            <a href="https://www.magnific.com/" target="_blank" rel="noopener noreferrer">https://www.magnific.com/</a>
+          </li>
+          <li>
+            Flaticon. (2026). Biblioteca de iconos y recursos gráficos vectoriales.
+            <a href="https://www.flaticon.com/" target="_blank" rel="noopener noreferrer">https://www.flaticon.com/</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="equipo">
+      <h3>Equipo de trabajo</h3>
+      <ul>
+        @for (p of equipo; track p.nombre) {
+          <li>
+            <img [src]="p.foto" [alt]="'Foto de ' + p.nombre" loading="lazy" width="96" height="96" />
+            <span>{{ p.nombre }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <p class="firma">© {{ anio }} Guardianes del morichal · Vereda Cola de Pato, Acacías, Meta</p>
+  </div>
+</footer>

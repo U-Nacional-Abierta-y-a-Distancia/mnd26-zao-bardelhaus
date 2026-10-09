@@ -1,0 +1,38 @@
+.sonido {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.75rem;
+  padding: 0 1rem 0 0.8rem;
+  border: 2px solid rgb(255 255 255 / 0.35);
+  border-radius: 999px;
+  background: rgb(31 58 43 / 0.85);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font: 700 0.9rem var(--sans);
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.25);
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+.sonido:hover { transform: scale(1.04); border-color: var(--sabana); }
+.sonido.sonando { border-color: var(--sabana); }
+.sonido svg { width: 1.3rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.barras { display: inline-flex; align-items: flex-end; gap: 2px; width: 1.2rem; height: 1rem; }
+.barras i { flex: 1; height: 40%; border-radius: 2px; background: var(--sabana); }
+@media (prefers-reduced-motion: no-preference) {
+  .barras i { animation: rebote 0.9s ease-in-out infinite alternate; }
+  .barras i:nth-child(2) { animation-delay: -0.3s; }
+  .barras i:nth-child(3) { animation-delay: -0.6s; }
+  .barras i:nth-child(4) { animation-delay: -0.15s; }
+  @keyframes rebote { from { height: 25%; } to { height: 100%; } }
+}
+
+@media (max-width: 560px) {
+  .sonido { width: 2.75rem; padding: 0; justify-content: center; }
+  .texto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
