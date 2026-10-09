@@ -12,7 +12,7 @@
 | Zona / Centro(s) | ZAO |
 | Tipo de producto (Tabla 1 del documento técnico) | Prototipo de App / Web Interactiva |
 | Integrantes (solo nombres completos) | Diana Carolina Barbosa Pabón, Natalia Andrea Barbosa Pabón, Ichel Alejandra Delgado Morales |
-| Enlace al demo web (si aplica) | https://narrativa-morichal.bardelhaus.com[https://narrativa-morichal.bardelhaus.com]|
+| Enlace al demo web (si aplica) | [https://narrativa-morichal.bardelhaus.com](https://narrativa-morichal.bardelhaus.com)|
 
 **No escriba aquí cédulas, teléfonos ni correos.** Este repositorio se hace público el viernes 9 de octubre a las 12:00 m.
 
